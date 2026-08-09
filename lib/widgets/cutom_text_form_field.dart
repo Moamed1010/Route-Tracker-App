@@ -1,13 +1,13 @@
-
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
   // الـ Constructor الصحيح بدون تكرار
-  const CustomTextFormField({super.key});
-
+  const CustomTextFormField({super.key, required this.controller});
+  final TextEditingController controller;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16),
         fillColor: Colors.white,
