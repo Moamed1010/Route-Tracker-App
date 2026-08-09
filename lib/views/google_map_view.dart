@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:route_tracker_app/utils/location_services.dart';
+import 'package:route_tracker_app/widgets/cutom_text_form_field.dart';
 
 class GoogleMapView extends StatefulWidget {
   const GoogleMapView({super.key});
@@ -24,14 +25,20 @@ class _GoogleMapViewState extends State<GoogleMapView> {
 
   @override
   Widget build(BuildContext context) {
-    return GoogleMap(
-      markers: markers,
-      onMapCreated: (controller) {
-        googleMapController = controller;
-        updateCurrentLocation();
-      },
-      zoomControlsEnabled: false,
-      initialCameraPosition: initialCameraPosition,
+    return Stack(
+      children: [
+        GoogleMap(
+          markers: markers,
+          onMapCreated: (controller) {
+            googleMapController = controller;
+            updateCurrentLocation();
+          },
+          zoomControlsEnabled: false,
+          initialCameraPosition: initialCameraPosition,
+        ),
+        
+        Positioned(top: 25, left: 22, right: 22, child: CustomTextFormField()),
+      ],
     );
   }
 
@@ -52,14 +59,9 @@ class _GoogleMapViewState extends State<GoogleMapView> {
         position: currentLatLng,
         infoWindow: const InfoWindow(title: 'Current Location'),
       );
-      Marker destinationMarker = Marker(
-        markerId: const MarkerId('destination'),
-        position: const LatLng(37.7749, -122.4194),
-        infoWindow: const InfoWindow(title: 'Destination'),
-      );
+
       setState(() {
         markers.add(currentLocationMarker);
-        markers.add(destinationMarker);
       });
       googleMapController.animateCamera(
         CameraUpdate.newCameraPosition(cameraPosition),
