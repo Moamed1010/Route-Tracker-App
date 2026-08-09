@@ -6,7 +6,7 @@
         
         <!-- مكان الـ API Key الصحيح: جوه الـ application وبره الـ activity -->
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCsC4X7_KlWyVnK0pIPRSHN2eUXdotQfSo" />
+            android:value="AIzaSyA64Tdvdi0PKHxfWQLB5sRO2T6YW0yzGWs" />
 
         <activity
             android:name=".MainActivity"

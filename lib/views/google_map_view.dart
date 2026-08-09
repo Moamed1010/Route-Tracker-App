@@ -52,8 +52,14 @@ class _GoogleMapViewState extends State<GoogleMapView> {
         position: currentLatLng,
         infoWindow: const InfoWindow(title: 'Current Location'),
       );
+      Marker destinationMarker = Marker(
+        markerId: const MarkerId('destination'),
+        position: const LatLng(37.7749, -122.4194),
+        infoWindow: const InfoWindow(title: 'Destination'),
+      );
       setState(() {
         markers.add(currentLocationMarker);
+        markers.add(destinationMarker);
       });
       googleMapController.animateCamera(
         CameraUpdate.newCameraPosition(cameraPosition),
