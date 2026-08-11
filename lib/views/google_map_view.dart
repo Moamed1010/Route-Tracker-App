@@ -32,7 +32,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
     mapsPlacesServices = MapsPlacesServices();
     textEditingController = TextEditingController();
     
-    // تفعيل دالة الاستماع لحقل البحث
+   
     fetchPlaceSuggestions();
   }
 
@@ -56,7 +56,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
           initialCameraPosition: initialCameraPosition,
         ),
         Positioned(
-          top: 50, // كبرناها لتفادي شريط الإشعارات (Status bar)
+          top: 50, 
           left: 22,
           right: 22,
           child: Column(
@@ -64,7 +64,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
               CustomTextFormField(controller: textEditingController),
               const SizedBox(height: 10),
               
-              // استدعاء الـ ListView مع تمرير الدالة والمتغيرات
+
               SuggestionsListView(
                 placeSuggestions: placeSuggestions,
                 onPlaceSelected: (selectedPlace) {
@@ -74,37 +74,37 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                     selectedPlace.lng,
                   );
 
-                  // 2. تجهيز الكاميرا للمكان الجديد
+                 
                   CameraPosition cameraPosition = CameraPosition(
                     target: selectedLatLng,
                     zoom: 15,
                   );
 
-                  // 3. إنشاء الـ Marker للمكان الجديد
+               
                   Marker selectedLocationMarker = Marker(
                     markerId: MarkerId(selectedPlace.placeId),
                     position: selectedLatLng,
                     infoWindow: InfoWindow(title: selectedPlace.name),
                   );
 
-                  // 4. تحديث الشاشة (إضافة العلامة وإخفاء الليست)
+                 
                   setState(() {
                     markers.clear();
                     markers.add(selectedLocationMarker);
                     
-                    // مسح القائمة لإخفاء الـ ListView
+                
                     placeSuggestions.clear();
                     
-                    // مسح مربع البحث
+                  
                  //   textEditingController.clear();
                   });
 
-                  // 5. تحريك الكاميرا على الخريطة
+                 
                   googleMapController.animateCamera(
                     CameraUpdate.newCameraPosition(cameraPosition),
                   );
                   
-                  // 6. إخفاء لوحة المفاتيح
+             
                   FocusScope.of(context).unfocus();
                 },
               ),
@@ -149,27 +149,33 @@ class _GoogleMapViewState extends State<GoogleMapView> {
       // TODO: Handle generic exceptions
     }
   }
-
-  void fetchPlaceSuggestions() {
+void fetchPlaceSuggestions() {
     textEditingController.addListener(() async {
       final text = textEditingController.text;
 
       if (text.isNotEmpty) {
+        // إرسال الطلب للسيرفر فوراً بدون أي انتظار
         var result = await mapsPlacesServices.getSuggestions(text);
         
-        setState(() {
-          placeSuggestions.clear();
-          placeSuggestions.addAll(result);
-        });
+        // التأكد إن الشاشة لسه مفتوحة عشان نتجنب الـ Errors
+        if (mounted) {
+          setState(() {
+            placeSuggestions.clear();
+            placeSuggestions.addAll(result);
+          });
+        }
       } else {
-        // في حالة إن المستخدم مسح الكلام اللي كتبه
-        setState(() {
-          placeSuggestions.clear();
-        });
+        // مسح الليست فوراً لو مسحت الكلام
+        if (mounted) {
+          setState(() {
+            placeSuggestions.clear();
+          });
+        }
       }
     });
   }
-}
+  }
+
 
 // -------------------------------------------------------------------
 // ويدجت الـ ListView مفصولة في كلاس لتنظيم الكود
