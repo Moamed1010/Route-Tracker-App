@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:route_tracker_app/models/place_suggestion_model.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:route_tracker_app/features/data/models/place_suggestion_model.dart';
+import 'package:route_tracker_app/features/data/models/route_model.dart';
+
 
 class MapsPlacesServices {
   final String _apiKey = 'bf04278fffa4452d970d0227575a2099';
@@ -25,8 +28,31 @@ class MapsPlacesServices {
         return [];
       }
     } catch (e) {
-      print('Error getting suggestions: $e');
       return [];
+    }
+  }
+
+  // ضيف الدالة دي في كلاس MapsPlacesServices
+  Future<RouteModel?> getRoute(LatLng start, LatLng end) async {
+    try {
+      final response = await _dio.get(
+        'https://api.geoapify.com/v1/routing',
+        queryParameters: {
+          'waypoints':
+              '${start.latitude},${start.longitude}|${end.latitude},${end.longitude}',
+          'mode': 'drive',
+          'apiKey': _apiKey,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return RouteModel.fromJson(response.data);
+      } else {
+        return null;
+      }
+    } catch (e) {
+   
+      return null;
     }
   }
 }
