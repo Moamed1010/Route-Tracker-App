@@ -52,7 +52,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
             ),
             
             Positioned(
-              top: 50,
+              top: 15,
               left: 22,
               right: 22,
               child: Column(
@@ -75,51 +75,66 @@ class _GoogleMapViewState extends State<GoogleMapView> {
             
             if (cubit.routeInfo != null)
               Positioned(
-                bottom: 30,
-                left: 20,
-                right: 20,
-                child: Card(
-                  elevation: 6,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.access_time_filled, color: Colors.blueAccent, size: 28),
-                            const SizedBox(height: 8),
-                            Text(
-                              '${(cubit.routeInfo!.time / 60).round()} min',
-                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            const Text('Estimated Time', style: TextStyle(color: Colors.grey, fontSize: 14)),
-                          ],
-                        ),
-                        Container(height: 50, width: 1, color: Colors.grey[300]),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.route, color: Colors.green, size: 28),
-                            const SizedBox(height: 8),
-                            Text(
-                              '${(cubit.routeInfo!.distance / 1000).toStringAsFixed(1)} km',
-                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            const Text('Distance', style: TextStyle(color: Colors.grey, fontSize: 14)),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                bottom: 5,
+                left: 50,
+                right: 50,
+                child: TimeAndDistentionCard(cubit: cubit),
               ),
           ],
         );
       },
+    );
+  }
+}
+
+class TimeAndDistentionCard extends StatelessWidget {
+  const TimeAndDistentionCard({
+    super.key,
+    required this.cubit,
+  });
+
+  final MapsCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      
+      elevation: 6,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.access_time_filled, color: Colors.blueAccent, size: 28),
+                const SizedBox(height: 8),
+                Text(
+                  '${(cubit.routeInfo!.time / 60).round()} min',
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const Text('Estimated Time', style: TextStyle(color: Colors.grey, fontSize: 14)),
+              ],
+            ),
+            Container(height: 50, width: 1, color: Colors.grey[300]),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.route, color: Colors.green, size: 28),
+                const SizedBox(height: 8),
+                Text(
+                  '${(cubit.routeInfo!.distance / 1000).toStringAsFixed(1)} km',
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const Text('Distance', style: TextStyle(color: Colors.grey, fontSize: 14)),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
