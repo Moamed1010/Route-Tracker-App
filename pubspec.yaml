@@ -10,6 +10,7 @@ dependencies:
   dio: ^5.11.0
   flutter:
     sdk: flutter
+  flutter_bloc: ^9.1.1
   font_awesome_icon_class: ^0.0.6
   google_maps_flutter: ^2.18.0
   location: ^10.0.2
